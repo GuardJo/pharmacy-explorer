@@ -1,0 +1,8 @@
+FROM openjdk:11
+LABEL authors="dagh1218"
+
+ARG JAR_FILE=build/libs/app.jar
+COPY ${JAR_FILE} ./app.jar
+
+ENV TZ='Asia/Seoul'
+ENTRYPOINT ["java", "-jar", "./app.jar"]
