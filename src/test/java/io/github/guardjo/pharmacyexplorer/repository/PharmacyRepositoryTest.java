@@ -1,14 +1,17 @@
 package io.github.guardjo.pharmacyexplorer.repository;
 
+import io.github.guardjo.pharmacyexplorer.AbstractTestContainerTest;
 import io.github.guardjo.pharmacyexplorer.config.JpaConfig;
 import io.github.guardjo.pharmacyexplorer.domain.Pharmacy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,7 +23,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ActiveProfiles("test")
 @DataJpaTest
 @Import(value = JpaConfig.class)
-class PharmacyRepositoryTest {
+@Testcontainers
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class PharmacyRepositoryTest extends AbstractTestContainerTest {
     @Autowired
     private PharmacyRepository pharmacyRepository;
 
