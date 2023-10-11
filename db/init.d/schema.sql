@@ -1,11 +1,11 @@
-create table PHARMACY
+create table pharmacy
 (
-    id            bigint                                not null
+    id            bigint       not null
         primary key,
-    address       varchar(255)                          null,
-    name          varchar(255)                          null,
-    longtitude    double                                null,
-    latitude      double                                null,
-    created_date  timestamp default current_timestamp() not null,
-    modified_date timestamp default current_timestamp() null
+    address       varchar(255) null,
+    name          varchar(255) null,
+    longtitude    double       not null,
+    latitude      double       not null,
+    created_date  timestamp    null,
+    modified_date timestamp    null
 );
