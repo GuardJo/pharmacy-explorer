@@ -1,6 +1,6 @@
 create table pharmacy
 (
-    id            bigint       not null
+    id            bigint       not null auto_increment
         primary key,
     address       varchar(255) null,
     name          varchar(255) null,

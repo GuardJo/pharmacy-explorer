@@ -64,3 +64,7 @@ erDiagram
         timestamp modified_date
     }
 ```
+
+약국 데이터 수집 제한 사항
+
+- [공공데이터 포탈](https://www.data.go.kr/data/15042744/fileData.do) 내 위도, 경도 정보가 포함되지 않는 데이터들이 있어 경기도 의정부시 기준의 약국 정보들로 제한함
