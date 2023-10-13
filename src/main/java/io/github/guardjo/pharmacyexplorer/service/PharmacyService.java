@@ -5,6 +5,7 @@ import io.github.guardjo.pharmacyexplorer.repository.PharmacyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class PharmacyService {
      *
      * @return Pharmacy List
      */
+    @Transactional(readOnly = true)
     public List<Pharmacy> findAllPharmacies() {
         log.info("Find all Pharmacies");
 
