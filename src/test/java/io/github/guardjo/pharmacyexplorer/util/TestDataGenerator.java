@@ -1,5 +1,6 @@
 package io.github.guardjo.pharmacyexplorer.util;
 
+import io.github.guardjo.pharmacyexplorer.domain.Pharmacy;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.AddressSearchResponse;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.DocumentDto;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.MetaDto;
@@ -28,6 +29,15 @@ public class TestDataGenerator {
         return AddressSearchResponse.builder()
                 .meta(metaDto())
                 .documents(List.of(documentDto(address)))
+                .build();
+    }
+
+    public static Pharmacy pharmacy() {
+        return Pharmacy.builder()
+                .name("test")
+                .latitude(10.0)
+                .longtitude(20.0)
+                .address("test address")
                 .build();
     }
 }
