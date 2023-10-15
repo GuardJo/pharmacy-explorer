@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
@@ -13,4 +14,8 @@ import java.util.List;
 public class AddressSearchResponse {
     private MetaDto meta;
     private List<DocumentDto> documents;
+
+    public static AddressSearchResponse EmptyResponse() {
+        return new AddressSearchResponse(MetaDto.emptyMeta(), List.of());
+    }
 }

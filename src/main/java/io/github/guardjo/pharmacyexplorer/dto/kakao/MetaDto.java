@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
@@ -17,4 +18,8 @@ public class MetaDto {
     private int pageableCount;
     @JsonProperty("is_end")
     private boolean end;
+
+    public static MetaDto emptyMeta() {
+        return new MetaDto(-1, -1, true);
+    }
 }
