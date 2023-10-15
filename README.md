@@ -63,8 +63,56 @@ erDiagram
         timestamp created_date
         timestamp modified_date
     }
+
+    SEARCH_INFO {
+        bigint id PK
+        varchar[255] base_address
+        double base_lng UK
+        double base_lat UK
+        timestamp created_date
+        timestamp modified_date
+    }
+
+    SEARCH_INFOS_PHRAMACIES {
+        bigint id PK
+        bigint search_info_id FK
+        bigint pharmacy_id FK
+    }
+
+    PHARMACY || -- o{ SEARCH_INFOS_PHRAMACIES: pharmacy_id
+    SEARCH_INFOS_PHRAMACIES }o -- || SEARCH_INFO: search_info_id
 ```
 
 약국 데이터 수집 제한 사항
 
 - [공공데이터 포탈](https://www.data.go.kr/data/15042744/fileData.do) 내 위도, 경도 정보가 포함되지 않는 데이터들이 있어 경기도 의정부시 기준의 약국 정보들로 제한함
+
+## 테이블 정보
+
+### PHARMACY
+
+약국 정보
+
+- address : 약국 주소
+- name : 약국명
+- longtitude : 경도
+- latitude : 위도
+- created_time : 생성 일자
+- modified_time : 마지막 수정 일자
+
+### SEARCH_INFO
+
+검색 결과 저장 정보
+
+- base_address : 검색 요청 주소
+- base_lng : 검색 요청 경도
+- base_lat : 검색 요청 위도
+- created_time : 생성 일자
+- modified_time : 마지막 수정 일자
+
+### SEARCH_INFOS_PHRAMACIES
+
+SEARCH_INFO와 PHARMACY 간의 연결테이블
+
+- search_info_id : SEARCH_INFO에 대한 외래키
+- pharmacy_id : PHARMACY에 대한 외래키

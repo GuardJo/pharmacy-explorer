@@ -9,3 +9,26 @@ create table pharmacy
     created_date  timestamp    null,
     modified_date timestamp    null
 );
+
+create table search_info
+(
+    id            bigint       not null
+        primary key,
+    base_address  varchar(255) not null,
+    base_lng      double       not null,
+    base_lat      double       not null,
+    created_date  timestamp    null,
+    modified_date timestamp    null
+);
+
+create table search_infos_pharmacies
+(
+    id             bigint not null
+        primary key,
+    search_info_id bigint null,
+    pharmacy_id    bigint null,
+    constraint search_infos_pharmacies_pharmacy_id_fk
+        foreign key (pharmacy_id) references pharmacy (id),
+    constraint search_infos_pharmacies_search_info_id_fk
+        foreign key (search_info_id) references search_info (id)
+);
