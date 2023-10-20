@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Header Layout</title>
+</head>
+<body>
+<div>
+    <div class="d-block">
+        <h1 class="h2 text-center">주변 약국 검색 서비스</h1>
+    </div>
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow justify-content-center">
+        <!-- Title -->
+        <!-- Topbar Search -->
+        <form class="d-block d-sm-inline-block form-inline navbar-search" method="get" action="/search">
+            <div class="input-group">
+                <input type="text" class="form-control bg-light border-0 small" placeholder="주소 검색..."
+                       aria-label="Search" aria-describedby="basic-addon2" name="address">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                        검색
+                    </button>
+                </div>
+            </div>
+        </form>
+    </nav>
+</div>
+</body>
+</html>
