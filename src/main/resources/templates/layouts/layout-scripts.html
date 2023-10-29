@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Scripts Layout</title>
+</head>
+<body>
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/jquery-easing/js/jquery.easing.min.js"></script>
+<script src="/sb-admin/js/sb-admin-2.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    window.onload = function () {
+        document.getElementById("address-search-input").addEventListener("click", function () {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    document.getElementById("address-search-input").value = data.address;
+                }
+            }).open();
+        });
+    }
+</script>
+</body>
+</html>
