@@ -39,6 +39,8 @@ public class ImportService {
         log.info("Initializing Pharmacy Data...");
         int initializedCount = 0;
 
+        pharmacyRepository.deleteAll();
+
         try {
             File csvData = readFile();
             List<PharmacyVo> pharmacyVoList = parseFrom(csvData);

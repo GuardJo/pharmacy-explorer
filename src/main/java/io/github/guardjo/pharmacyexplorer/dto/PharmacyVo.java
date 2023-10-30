@@ -15,10 +15,10 @@ public class PharmacyVo {
     private String address;
     @JsonProperty("사업장명")
     private String name;
-    @JsonProperty("경도")
-    private double longtitude;
     @JsonProperty("위도")
     private double latitude;
+    @JsonProperty("경도")
+    private double longtitude;
 
     public static Pharmacy toEntity(PharmacyVo vo) {
         return Pharmacy.builder()
