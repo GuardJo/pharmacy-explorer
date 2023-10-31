@@ -6,6 +6,7 @@ import io.github.guardjo.pharmacyexplorer.dto.kakao.AddressSearchResponse;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.DocumentDto;
 import io.github.guardjo.pharmacyexplorer.service.AddressSearchService;
 import io.github.guardjo.pharmacyexplorer.service.PharmacySearchService;
+import io.github.guardjo.pharmacyexplorer.util.KakaoUrlMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class SearchController {
     private final AddressSearchService addressSearchService;
     private final PharmacySearchService pharmacySearchService;
+    private final KakaoUrlMapper kakaoUrlMapper;
 
     @GetMapping
     public String searchResult(ModelMap modelMap, @RequestParam("address") String address) {
@@ -41,7 +43,14 @@ public class SearchController {
             List<PharmacyDto> pharmacyDtoList = pharmacySearchService.searchPharmacies(documentDto);
 
             searchResponses.addAll(pharmacyDtoList.stream()
-                    .map(PharmacySearchResponse::from)
+                    .map(pharmacyDto -> {
+                        String naviUrl = kakaoUrlMapper.getNavigationUrl(pharmacyDto.getName(),
+                                pharmacyDto.getLatitude(), pharmacyDto.getLongtitude()).toString();
+                        String roadViewUrl = kakaoUrlMapper.getRoadViewUrl(pharmacyDto.getLatitude(),
+                                pharmacyDto.getLongtitude()).toString();
+
+                        return PharmacySearchResponse.from(pharmacyDto, naviUrl, roadViewUrl);
+                    })
                     .collect(Collectors.toList()));
         }
 
