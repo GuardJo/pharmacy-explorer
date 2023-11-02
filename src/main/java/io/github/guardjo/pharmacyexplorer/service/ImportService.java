@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import io.github.guardjo.pharmacyexplorer.dto.PharmacyVo;
 import io.github.guardjo.pharmacyexplorer.repository.PharmacyRepository;
+import io.github.guardjo.pharmacyexplorer.repository.SearchInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -27,6 +28,7 @@ public class ImportService {
     private final CsvSchema csvSchema;
     private final CsvMapper csvMapper;
     private final PharmacyRepository pharmacyRepository;
+    private final SearchInfoRepository searchInfoRepository;
 
     private final static String PHARMACY_DATA_FILE_NAME = "pharmacy_data.csv";
 
@@ -39,6 +41,7 @@ public class ImportService {
         log.info("Initializing Pharmacy Data...");
         int initializedCount = 0;
 
+        searchInfoRepository.deleteAll();
         pharmacyRepository.deleteAll();
 
         try {

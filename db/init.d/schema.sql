@@ -12,7 +12,7 @@ create table pharmacy
 
 create table search_info
 (
-    id            bigint       not null
+    id            bigint       not null auto_increment
         primary key,
     base_address  varchar(255) not null,
     base_lng      double       not null,
@@ -23,7 +23,7 @@ create table search_info
 
 create table search_infos_pharmacies
 (
-    id             bigint not null
+    id             bigint not null auto_increment
         primary key,
     search_info_id bigint null,
     pharmacy_id    bigint null,

@@ -20,7 +20,7 @@ public class SearchInfo extends BaseEntity {
     private double baseLng;
     private double baseLat;
 
-    @ManyToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany
     @JoinTable(
             name = "SEARCH_INFOS_PHARMACIES",
             joinColumns = @JoinColumn(name = "SEARCH_INFO_ID"),
