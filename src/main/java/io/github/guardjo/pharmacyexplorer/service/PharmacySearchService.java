@@ -1,5 +1,7 @@
 package io.github.guardjo.pharmacyexplorer.service;
 
+import io.github.guardjo.pharmacyexplorer.domain.Pharmacy;
+import io.github.guardjo.pharmacyexplorer.domain.SearchInfo;
 import io.github.guardjo.pharmacyexplorer.dto.PharmacyDto;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.DocumentDto;
 import io.github.guardjo.pharmacyexplorer.util.DistanceCalculator;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PharmacySearchService {
     private final PharmacyService pharmacyService;
+    private final SearchInfoService searchInfoService;
     private final DistanceCalculator distanceCalculator;
 
     private final static int SEARCH_LIMIT_SIZE = 3;
@@ -36,7 +39,12 @@ public class PharmacySearchService {
             return List.of();
         }
 
-        List<PharmacyDto> pharmacyDtoList = pharmacyService.findAllPharmacies().stream()
+        SearchInfo searchInfo = searchInfoService.findSearchInfo(base);
+
+        List<Pharmacy> pharmacies = Objects.isNull(searchInfo) ? pharmacyService.findAllPharmacies() :
+                searchInfo.getPharmacies();
+
+        List<PharmacyDto> pharmacyDtoList = pharmacies.stream()
                 .map(PharmacyDto::from)
                 .map(pharmacyDto -> updateTargetDistance(base, pharmacyDto))
                 .filter(pharmacyDto -> pharmacyDto.getTargetDistance() < SEARCH_LIMIT_AREA)
@@ -45,6 +53,12 @@ public class PharmacySearchService {
                 .collect(Collectors.toList());
 
         log.info("Searched Pharmacies. resultSize = {}", pharmacyDtoList.size());
+
+        if (Objects.isNull(searchInfo)) {
+            searchInfoService.saveNewSearchInfo(base, pharmacyDtoList.stream()
+                    .map(PharmacyDto::toEntity)
+                    .collect(Collectors.toList()));
+        }
 
         return pharmacyDtoList;
     }
