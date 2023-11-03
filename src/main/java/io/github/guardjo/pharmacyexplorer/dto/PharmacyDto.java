@@ -26,4 +26,14 @@ public class PharmacyDto {
                 0.0
         );
     }
+
+    public static Pharmacy toEntity(PharmacyDto pharmacyDto) {
+        return Pharmacy.builder()
+                .id(pharmacyDto.getId())
+                .address(pharmacyDto.getAddress())
+                .name(pharmacyDto.getName())
+                .longtitude(pharmacyDto.getLongtitude())
+                .latitude(pharmacyDto.getLatitude())
+                .build();
+    }
 }

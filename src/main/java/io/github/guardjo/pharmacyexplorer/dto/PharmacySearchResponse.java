@@ -12,4 +12,14 @@ public class PharmacySearchResponse {
     private String mapUrl;
     private String roadViewUrl;
     private float distance;
+
+    public static PharmacySearchResponse from(PharmacyDto pharmacyDto, String mapUrl, String roadViewUrl) {
+        return new PharmacySearchResponse(
+                pharmacyDto.getName(),
+                pharmacyDto.getAddress(),
+                mapUrl,
+                roadViewUrl,
+                (float) pharmacyDto.getTargetDistance()
+        );
+    }
 }

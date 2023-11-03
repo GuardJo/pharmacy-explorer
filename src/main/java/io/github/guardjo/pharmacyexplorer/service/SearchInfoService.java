@@ -7,6 +7,7 @@ import io.github.guardjo.pharmacyexplorer.repository.SearchInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class SearchInfoService {
     private final SearchInfoRepository searchInfoRepository;
 
@@ -23,6 +25,7 @@ public class SearchInfoService {
      * @param documentDto 사용자가 입력한 주소 기반 정보
      * @return 입력 위/경도에 해당하는 SearchInfo 값 반환 (없을 경우 null)
      */
+    @Transactional(readOnly = true)
     public SearchInfo findSearchInfo(DocumentDto documentDto) {
         double baseLat = documentDto.getLatitude();
         double baseLng = documentDto.getLongitude();

@@ -21,8 +21,8 @@ public class TestDataGenerator {
         return DocumentDto.builder()
                 .addressName(address)
                 .addressType("REGION")
-                .latitude(100.0)
                 .longitude(100.0)
+                .latitude(100.0)
                 .build();
     }
 
