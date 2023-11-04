@@ -6,10 +6,10 @@
                 <attr sel="td[0]" th:text="${searchResponse.pharmacyName}"/>
                 <attr sel="td[1]" th:text="${searchResponse.address}"/>
                 <attr sel="td[2]">
-                    <attr sel="a" th:href="${searchResponse.mapUrl}"/>
+                    <attr sel="a" th:href="${searchResponse.mapUrl}" th:text="${searchResponse.mapUrl}"/>
                 </attr>
                 <attr sel="td[3]">
-                    <attr sel="a" th:href="${searchResponse.roadViewUrl}"/>
+                    <attr sel="a" th:href="${searchResponse.roadViewUrl}" th:text="${searchResponse.roadViewUrl}"/>
                 </attr>
                 <attr sel="td[4]" th:text="${#numbers.formatDecimal(searchResponse.distance, 1, 2)} + ' km'"/>
             </attr>

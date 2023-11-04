@@ -1,9 +1,11 @@
 package io.github.guardjo.pharmacyexplorer.controller;
 
+import io.github.guardjo.pharmacyexplorer.constants.ContextPath;
 import io.github.guardjo.pharmacyexplorer.dto.PharmacyDto;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.AddressSearchResponse;
 import io.github.guardjo.pharmacyexplorer.service.AddressSearchService;
 import io.github.guardjo.pharmacyexplorer.service.PharmacySearchService;
+import io.github.guardjo.pharmacyexplorer.service.ShortenUrlService;
 import io.github.guardjo.pharmacyexplorer.util.KakaoUrlMapper;
 import io.github.guardjo.pharmacyexplorer.util.TestDataGenerator;
 import org.junit.jupiter.api.DisplayName;
@@ -16,9 +18,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.net.URI;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.atLeast;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -32,6 +36,8 @@ class SearchControllerTest {
     private AddressSearchService addressSearchService;
     @MockBean
     private PharmacySearchService pharmacySearchService;
+    @MockBean
+    private ShortenUrlService shortenUrlService;
     @MockBean
     private KakaoUrlMapper kakaoUrlMapper;
 
@@ -47,8 +53,9 @@ class SearchControllerTest {
         given(kakaoUrlMapper.getNavigationUrl(eq(pharmacyDto.getName()), eq(pharmacyDto.getLatitude()),
                 eq(pharmacyDto.getLongtitude()))).willReturn(URI.create("#"));
         given(kakaoUrlMapper.getRoadViewUrl(eq(pharmacyDto.getLatitude()), eq(pharmacyDto.getLongtitude()))).willReturn(URI.create("#"));
+        given(shortenUrlService.saveShortenUrl(anyString())).willReturn(anyString());
 
-        mockMvc.perform(get("/search")
+        mockMvc.perform(get(ContextPath.SEARCH_URL_ENDPOINT)
                         .queryParam("address", searchAddress))
                 .andExpect(status().isOk())
                 .andExpect(view().name("search/search-table"))
@@ -59,5 +66,6 @@ class SearchControllerTest {
         then(kakaoUrlMapper).should().getNavigationUrl(eq(pharmacyDto.getName()), eq(pharmacyDto.getLatitude()),
                 eq(pharmacyDto.getLongtitude()));
         then(kakaoUrlMapper).should().getRoadViewUrl(eq(pharmacyDto.getLatitude()), eq(pharmacyDto.getLongtitude()));
+        then(shortenUrlService).should(atLeast(2)).saveShortenUrl(anyString());
     }
 }
