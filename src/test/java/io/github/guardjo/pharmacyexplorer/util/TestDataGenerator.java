@@ -54,6 +54,7 @@ public class TestDataGenerator {
 
     public static ShortenUrl shortenUrl() {
         return ShortenUrl.builder()
+                .id(1L)
                 .originalUrl(RandomString.make(30))
                 .build();
     }
