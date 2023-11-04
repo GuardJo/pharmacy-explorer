@@ -2,9 +2,11 @@ package io.github.guardjo.pharmacyexplorer.util;
 
 import io.github.guardjo.pharmacyexplorer.domain.Pharmacy;
 import io.github.guardjo.pharmacyexplorer.domain.SearchInfo;
+import io.github.guardjo.pharmacyexplorer.domain.ShortenUrl;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.AddressSearchResponse;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.DocumentDto;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.MetaDto;
+import org.assertj.core.internal.bytebuddy.utility.RandomString;
 
 import java.util.List;
 
@@ -47,6 +49,12 @@ public class TestDataGenerator {
                 .baseAddress("test address")
                 .baseLat(lat)
                 .baseLng(lng)
+                .build();
+    }
+
+    public static ShortenUrl shortenUrl() {
+        return ShortenUrl.builder()
+                .originalUrl(RandomString.make(30))
                 .build();
     }
 }
