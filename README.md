@@ -121,3 +121,9 @@ SEARCH_INFO와 PHARMACY 간의 연결테이블
 
 - search_info_id : SEARCH_INFO에 대한 외래키
 - pharmacy_id : PHARMACY에 대한 외래키
+
+### SHORTEN_URL
+
+검색된 약국의 거리뷰, 길찾기뷰 URL 관리 테이블
+
+- originalUrl : 원본 URL
