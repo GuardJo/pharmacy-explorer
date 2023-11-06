@@ -32,3 +32,12 @@ create table search_infos_pharmacies
     constraint search_infos_pharmacies_search_info_id_fk
         foreign key (search_info_id) references search_info (id)
 );
+
+create table shorten_url
+(
+    id           bigint auto_increment
+        primary key,
+    original_url varchar(500) not null,
+    constraint shorten_url_pk
+        unique (original_url)
+);

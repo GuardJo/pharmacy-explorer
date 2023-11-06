@@ -34,6 +34,8 @@ class PharmacyRepositoryTest extends AbstractTestContainerTest {
 
     @BeforeEach
     void setUp() {
+        pharmacyRepository.deleteAll();
+        
         List<Pharmacy> pharmacies = new ArrayList<>();
 
         for (int i = 0; i < TEST_DATA_SIZE; i++) {

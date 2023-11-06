@@ -79,6 +79,11 @@ erDiagram
         bigint pharmacy_id FK
     }
 
+    SHORTEN_URL {
+        bigint id PK
+        varchar[500] originalUrl
+    }
+
     PHARMACY || -- o{ SEARCH_INFOS_PHRAMACIES: pharmacy_id
     SEARCH_INFOS_PHRAMACIES }o -- || SEARCH_INFO: search_info_id
 ```
