@@ -10,9 +10,13 @@ public abstract class AbstractTestContainerTest {
     static {
         MARIA_DB_CONTAINER = new MariaDBContainer();
         REDIS_CONTAINER = new GenericContainer("redis:7")
+                .withAccessToHost(true)
                 .withExposedPorts(6379);
 
         MARIA_DB_CONTAINER.start();
         REDIS_CONTAINER.start();
+
+        System.setProperty("spring.redis.host", REDIS_CONTAINER.getHost());
+        System.setProperty("spring.redis.port", REDIS_CONTAINER.getMappedPort(6379).toString());
     }
 }
