@@ -6,6 +6,7 @@ import io.github.guardjo.pharmacyexplorer.repository.cache.PharmacyCacheReposito
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,12 +22,17 @@ public class CacheService {
     /**
      * DB 에 저장된 약국 데이터들을 캐싱한다.
      */
+    @Transactional
     public void initCacheData() {
         log.info("Caching Pharmacy Data...");
 
         List<Pharmacy> pharmacies = pharmacyService.findAllPharmacies();
+        List<PharmacyCache> pharmacyCache = pharmacies.stream()
+                .map(this::convertCacheData)
+                .collect(Collectors.toList());
+        ;
 
-        cacheRepository.saveAll((Iterable) pharmacies);
+        cacheRepository.saveAll(pharmacyCache);
 
         log.info("Cached Successes");
     }
@@ -36,6 +42,7 @@ public class CacheService {
      *
      * @return 캐싱된 약국 데이터 목록
      */
+    @Transactional(readOnly = true)
     public List<Pharmacy> findAllCacheData() {
         log.info("FindAll PharmacyCaches");
 

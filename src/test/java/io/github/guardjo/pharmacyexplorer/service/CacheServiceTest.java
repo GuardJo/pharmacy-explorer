@@ -17,9 +17,10 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
@@ -38,12 +39,12 @@ class CacheServiceTest {
         List<Pharmacy> pharmacies = List.of(TestDataGenerator.pharmacy(1L));
 
         given(pharmacyService.findAllPharmacies()).willReturn(pharmacies);
-        given(cacheRepository.saveAll(eq((Iterable) pharmacies))).willReturn(pharmacies);
+        given(cacheRepository.saveAll(anyList())).willReturn(mock(List.class));
 
         assertThatCode(() -> cacheService.initCacheData()).doesNotThrowAnyException();
 
         then(pharmacyService).should().findAllPharmacies();
-        then(cacheRepository).should().saveAll(eq((Iterable) pharmacies));
+        then(cacheRepository).should().saveAll(anyList());
     }
 
     @DisplayName("캐싱된 전체 데이터 반환 테스트")
