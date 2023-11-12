@@ -65,4 +65,12 @@ class PharmacyCacheRepositoryTest extends AbstractTestContainerTest {
 
         assertThat(pharmacyCacheRepository.count()).isEqualTo(TEST_DATA_SZIE - 1);
     }
+
+    @DisplayName("전체 PharmacyCache 삭제")
+    @Test
+    void test_deleteAll() {
+        pharmacyCacheRepository.deleteAll();
+
+        assertThat(pharmacyCacheRepository.count()).isEqualTo(0);
+    }
 }

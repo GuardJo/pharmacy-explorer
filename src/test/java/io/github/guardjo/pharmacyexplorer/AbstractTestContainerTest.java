@@ -8,7 +8,7 @@ public abstract class AbstractTestContainerTest {
     static final GenericContainer REDIS_CONTAINER;
 
     static {
-        MARIA_DB_CONTAINER = new MariaDBContainer();
+        MARIA_DB_CONTAINER = new MariaDBContainer("mariadb:11.0-rc");
         REDIS_CONTAINER = new GenericContainer("redis:7")
                 .withAccessToHost(true)
                 .withExposedPorts(6379);

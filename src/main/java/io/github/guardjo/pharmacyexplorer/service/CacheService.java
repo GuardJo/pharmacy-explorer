@@ -54,6 +54,17 @@ public class CacheService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 캐싱된 약국 데이터들을 삭제한다.
+     */
+    public void cleanCache() {
+        log.info("Cleaning CacheData...");
+
+        cacheRepository.deleteAll();
+
+        log.info("Cleaned CacheData");
+    }
+
     private PharmacyCache convertCacheData(Pharmacy pharmacy) {
         return PharmacyCache.builder()
                 .id(pharmacy.getId())

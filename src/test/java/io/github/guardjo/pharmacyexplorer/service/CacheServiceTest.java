@@ -18,8 +18,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 
 @ActiveProfiles("test")
@@ -63,5 +62,15 @@ class CacheServiceTest {
         assertThat(actual).isEqualTo(expected);
 
         then(cacheRepository).should().findAll();
+    }
+
+    @DisplayName("PharmacyCache 데이터 전체 삭제 테스트")
+    @Test
+    void test_cleanCache() {
+        willDoNothing().given(cacheRepository).deleteAll();
+
+        assertThatCode(() -> cacheService.cleanCache()).doesNotThrowAnyException();
+
+        then(cacheRepository).should().deleteAll();
     }
 }
