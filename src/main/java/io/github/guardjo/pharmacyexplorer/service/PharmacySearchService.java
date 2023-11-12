@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class PharmacySearchService {
     private final PharmacyService pharmacyService;
     private final SearchInfoService searchInfoService;
+    private final CacheService cacheService;
     private final DistanceCalculator distanceCalculator;
 
     private final static int SEARCH_LIMIT_SIZE = 3;
@@ -41,7 +42,7 @@ public class PharmacySearchService {
 
         SearchInfo searchInfo = searchInfoService.findSearchInfo(base);
 
-        List<Pharmacy> pharmacies = Objects.isNull(searchInfo) ? pharmacyService.findAllPharmacies() :
+        List<Pharmacy> pharmacies = Objects.isNull(searchInfo) ? findAllPharmacies() :
                 searchInfo.getPharmacies();
 
         List<PharmacyDto> pharmacyDtoList = pharmacies.stream()
@@ -61,6 +62,12 @@ public class PharmacySearchService {
         }
 
         return pharmacyDtoList;
+    }
+
+    private List<Pharmacy> findAllPharmacies() {
+        List<Pharmacy> pharmacies = cacheService.findAllCacheData();
+
+        return pharmacies.isEmpty() ? pharmacyService.findAllPharmacies() : pharmacies;
     }
 
     private PharmacyDto updateTargetDistance(DocumentDto base, PharmacyDto pharmacyDto) {
