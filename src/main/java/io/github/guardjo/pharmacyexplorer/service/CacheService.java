@@ -57,6 +57,7 @@ public class CacheService {
     /**
      * 캐싱된 약국 데이터들을 삭제한다.
      */
+    @Transactional
     public void cleanCache() {
         log.info("Cleaning CacheData...");
 

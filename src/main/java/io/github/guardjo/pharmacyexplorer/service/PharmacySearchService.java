@@ -8,6 +8,7 @@ import io.github.guardjo.pharmacyexplorer.util.DistanceCalculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -32,6 +33,7 @@ public class PharmacySearchService {
      * @param base 지정된 위치
      * @return PharmacyDto List
      */
+    @Transactional(readOnly = true)
     public List<PharmacyDto> searchPharmacies(DocumentDto base) {
         log.debug("Searching Pharmacies...");
 
