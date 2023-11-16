@@ -8,6 +8,7 @@ import io.github.guardjo.pharmacyexplorer.util.DistanceCalculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class PharmacySearchService {
     private final PharmacyService pharmacyService;
     private final SearchInfoService searchInfoService;
+    private final CacheService cacheService;
     private final DistanceCalculator distanceCalculator;
 
     private final static int SEARCH_LIMIT_SIZE = 3;
@@ -31,6 +33,7 @@ public class PharmacySearchService {
      * @param base 지정된 위치
      * @return PharmacyDto List
      */
+    @Transactional(readOnly = true)
     public List<PharmacyDto> searchPharmacies(DocumentDto base) {
         log.debug("Searching Pharmacies...");
 
@@ -41,7 +44,7 @@ public class PharmacySearchService {
 
         SearchInfo searchInfo = searchInfoService.findSearchInfo(base);
 
-        List<Pharmacy> pharmacies = Objects.isNull(searchInfo) ? pharmacyService.findAllPharmacies() :
+        List<Pharmacy> pharmacies = Objects.isNull(searchInfo) ? findAllPharmacies() :
                 searchInfo.getPharmacies();
 
         List<PharmacyDto> pharmacyDtoList = pharmacies.stream()
@@ -61,6 +64,12 @@ public class PharmacySearchService {
         }
 
         return pharmacyDtoList;
+    }
+
+    private List<Pharmacy> findAllPharmacies() {
+        List<Pharmacy> pharmacies = cacheService.findAllCacheData();
+
+        return pharmacies.isEmpty() ? pharmacyService.findAllPharmacies() : pharmacies;
     }
 
     private PharmacyDto updateTargetDistance(DocumentDto base, PharmacyDto pharmacyDto) {

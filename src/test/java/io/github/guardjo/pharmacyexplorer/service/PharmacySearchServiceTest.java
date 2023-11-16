@@ -33,6 +33,8 @@ class PharmacySearchServiceTest {
     @Mock
     private SearchInfoService searchInfoService;
     @Mock
+    private CacheService cacheService;
+    @Mock
     private DistanceCalculator distanceCalculator;
 
     @InjectMocks
@@ -41,7 +43,7 @@ class PharmacySearchServiceTest {
     @DisplayName("주어진 위치에서 가까운 순으로 최대 3개의 약국 정보 반환")
     @ParameterizedTest
     @MethodSource("paramPharmacies")
-    void test_searchPharmacies(List<Pharmacy> pharmacies, SearchInfo searchInfo) {
+    void test_searchPharmacies(List<Pharmacy> pharmacies, SearchInfo searchInfo, boolean isCaching) {
         // 의정부역 기준
         double baseLat = 37.738415;
         double baseLng = 127.045958;
@@ -54,7 +56,12 @@ class PharmacySearchServiceTest {
 
         given(searchInfoService.findSearchInfo(eq(base))).willReturn(searchInfo);
         if (searchInfo == null) {
-            given(pharmacyService.findAllPharmacies()).willReturn(pharmacies);
+            if (isCaching) {
+                given(cacheService.findAllCacheData()).willReturn(pharmacies);
+            } else {
+                given(cacheService.findAllCacheData()).willReturn(List.of());
+                given(pharmacyService.findAllPharmacies()).willReturn(pharmacies);
+            }
             given(searchInfoService.saveNewSearchInfo(eq(base), anyList())).willReturn(TestDataGenerator.searchInfo(1, 1));
         }
         given(distanceCalculator.calculateDistanceByHaversine(eq(baseLat), eq(baseLng), anyDouble(), anyDouble())).willCallRealMethod();
@@ -66,10 +73,9 @@ class PharmacySearchServiceTest {
         assertThat(actual.get(1).getName()).isEqualTo("송약국");
 
         then(searchInfoService).should().findSearchInfo(eq(base));
-        if (searchInfo == null) {
-            then(pharmacyService).should().findAllPharmacies();
-            then(searchInfoService).should().saveNewSearchInfo(eq(base), anyList());
-        }
+        then(cacheService).should(atLeast(0)).findAllCacheData();
+        then(pharmacyService).should(atLeast(0)).findAllPharmacies();
+        then(searchInfoService).should(atLeast(0)).saveNewSearchInfo(eq(base), anyList());
         then(distanceCalculator).should(atLeast(1)).calculateDistanceByHaversine(eq(baseLat), eq(baseLng), anyDouble(),
                 anyDouble());
     }
@@ -102,8 +108,9 @@ class PharmacySearchServiceTest {
                 .build();
 
         return Stream.of(
-                Arguments.of(testData, null),
-                Arguments.of(null, searchInfo)
+                Arguments.of(testData, null, false),
+                Arguments.of(testData, null, true),
+                Arguments.of(null, searchInfo, false)
         );
     }
 }

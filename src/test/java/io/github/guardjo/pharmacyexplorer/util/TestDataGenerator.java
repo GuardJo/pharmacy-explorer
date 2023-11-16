@@ -3,6 +3,7 @@ package io.github.guardjo.pharmacyexplorer.util;
 import io.github.guardjo.pharmacyexplorer.domain.Pharmacy;
 import io.github.guardjo.pharmacyexplorer.domain.SearchInfo;
 import io.github.guardjo.pharmacyexplorer.domain.ShortenUrl;
+import io.github.guardjo.pharmacyexplorer.domain.cache.PharmacyCache;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.AddressSearchResponse;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.DocumentDto;
 import io.github.guardjo.pharmacyexplorer.dto.kakao.MetaDto;
@@ -56,6 +57,25 @@ public class TestDataGenerator {
         return ShortenUrl.builder()
                 .id(1L)
                 .originalUrl(RandomString.make(30))
+                .build();
+    }
+
+    public static Pharmacy pharmacy(long id) {
+        return Pharmacy.builder()
+                .id(id)
+                .name("test " + id)
+                .latitude(10.0)
+                .longtitude(20.0)
+                .address("test " + id + "address")
+                .build();
+    }
+
+    public static PharmacyCache pharmacyCache(long id) {
+        Pharmacy pharmacy = pharmacy(id);
+
+        return PharmacyCache.builder()
+                .id(pharmacy.getId())
+                .cacheData(pharmacy)
                 .build();
     }
 }
