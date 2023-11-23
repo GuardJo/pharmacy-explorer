@@ -42,6 +42,6 @@ jobs:
                   secret: KAKAO_REST_API_KEY
             context:
               git:
-                url: git@github.com:${{ github.repository }}.git
+                url: https://github.com/GuardJo/pharmacy-explorer.git
                 ref: ${{ github.ref }}
               preset: java-springboot
