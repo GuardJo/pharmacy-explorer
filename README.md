@@ -1,6 +1,8 @@
 # pharmacy-explorer
 
 > 특정 위치에서 가까운 약국 탐색기 서비스
+>
+[데모페이지 링크](https://port-0-pharmacy-explorer-cn1vmr2clp8ev13m.sel5.cloudtype.app/)
 
 # 요구사항
 
@@ -15,6 +17,9 @@
         - 반경 10km 내에 없을 경우 아무것도 반환하지 않는다.
         - 추출한 약국 정보에 대한 길안내 URL을 반환한다
             - URL 가독성을 위해 shortcut url 활용 예정
+  
+## 제한사항
+- 공공데이터 추출을 목적으로 하였기에, *의정부* 지역 내 약국으로 한정함
 
 # 수행 흐름
 
