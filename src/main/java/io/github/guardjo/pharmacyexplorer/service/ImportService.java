@@ -14,11 +14,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +52,6 @@ public class ImportService {
             List<PharmacyVo> pharmacyVoList = parseFrom(csvData);
             initializedCount = savePharmacies(pharmacyVoList);
 
-
         } catch (IOException e) {
             log.error("Failed Initialize Pharmacy Data, ", e);
         }
@@ -60,11 +62,24 @@ public class ImportService {
     private File readFile() throws IOException {
         Resource resource = new ClassPathResource(PHARMACY_DATA_FILE_NAME);
 
-        return resource.getFile();
+        try (InputStream inputStream = resource.getInputStream()) {
+            File copyDataFile = File.createTempFile("pharmacy_data_" + System.currentTimeMillis(), ".csv");
+            FileCopyUtils.copy(inputStream.readAllBytes(), copyDataFile);
+
+            return copyDataFile;
+        } catch (Exception e) {
+            log.error("Exception : ", e);
+            return null;
+        }
     }
 
     private List<PharmacyVo> parseFrom(File csvFile) {
         List<PharmacyVo> pharmacyVoList = new ArrayList<>();
+
+        if (Objects.isNull(csvFile)) {
+            log.error("Not Found CSV data");
+            return List.of();
+        }
 
         try (MappingIterator<PharmacyVo> mappingIterator = csvMapper.readerFor(PharmacyVo.class).with(csvSchema)
                 .readValues(csvFile)) {
@@ -72,6 +87,8 @@ public class ImportService {
 
         } catch (IOException e) {
             log.error("CSV Parsing Error, ", e);
+        } finally {
+            csvFile.deleteOnExit();
         }
 
         return pharmacyVoList;

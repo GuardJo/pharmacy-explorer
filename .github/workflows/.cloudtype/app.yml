@@ -1,0 +1,24 @@
+name: pharmacy-explorer
+app: java@11
+options:
+  ports: 8080
+  env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: prod
+    - name: PHARMACY_EXPLORER_DB_URL
+      var: PHARMACY_EXPLORER_DB_URL
+    - name: DATABASE_USERNAME
+      secret: DATABASE_USERNAME
+    - name: DATABASE_PASSWORD
+      secret: DATABASE_PASSWORD
+    - name: PHARMACY_REDIS_HOST
+      var: PHARMACY_REDIS_HOST
+    - name: PHARMACY_REDIS_PORT
+      var: PHARMACY_REDIS_PORT
+    - name: KAKAO_REST_API_KEY
+      secret: KAKAO_REST_API_KEY
+context:
+  git:
+    url: https://github.com/GuardJo/pharmacy-explorer.git
+    branch: main
+  preset: java-springboot
