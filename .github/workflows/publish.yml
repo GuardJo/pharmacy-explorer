@@ -20,4 +20,4 @@ jobs:
           token: ${{ secrets.CLOUDTYPE_TOKEN }}
           project: pharmacy-explorer-app/pharmacy-explorer-app
           stage: main
-          file: ./cloudtype/app.yml
+          file: ./.cloudtype/app.yml
